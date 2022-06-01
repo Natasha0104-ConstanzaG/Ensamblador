@@ -1,0 +1,76 @@
+borrar MACRO
+    MOV AX,0600H
+    MOV BH,07H
+    MOV CX,0000H
+    MOV DX,184FH
+    INT 10H
+ENDM
+cursor MACRO x,y
+    MOV AH,02H
+    MOV BH,00H
+    MOV DH,y
+    MOV DL,x
+    INT 10H
+ENDM
+muestra MACRO str
+    MOV AH,09H
+    LEA DX,str
+    INT 21H
+ENDM
+leer MACRO nmr
+    MOV AH,0AH
+    LEA DX,nmr
+    INT 21H
+ENDM
+anumero MACRO real1,cad1,suma1
+    LOCAL cambia,pot,numero
+    SUB CX,CX
+    MOV CL,real1
+    LEA BX,cad1
+cambia:
+    MOV AH,00H
+    MOV AL,[BX]
+    SUB AL,48
+    MOV valor,AX
+    MOV AX,01
+    MOV aux,CX
+    DEC aux
+    JZ numero
+pot:
+    MUL diez
+    DEC aux
+    JNZ pot
+numero:
+    MUL valor
+    ADD suma1,AX
+    INC BX
+    LOOP cambia
+ENDM
+acadena MACRO num1,result1
+    LOCAL um,ciclo
+    LEA BX,result1
+ciclo:
+    MOV AX,num1
+    CMP AX,dmil
+    JB um
+    SUB DX,DX 
+    DIV dmil
+    ADD AL,48
+    MOV [BX],AL
+    INC BX
+    MOV num1,DX
+    ;JMP unm
+um:
+    SUB DX,DX
+    MOV AX,dmil
+    DIV diez
+    MOV dmil,AX
+    CMP dmil,10
+    JAE ciclo
+    ADD AL,48
+    MOV [BX],AL
+    ;INC BX
+    MOV [BX],' '
+    INC BX
+    MOV [BX],'$'
+ENDM
