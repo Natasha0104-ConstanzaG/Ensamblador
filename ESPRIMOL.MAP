@@ -1,0 +1,9 @@
+
+ Start  Stop   Length Name               Class
+
+ 00000H 0001FH 00020H PILA               STACK
+ 00020H 00037H 00018H DATOS              DATA
+ 00040H 00090H 00051H CODIGO             CODE
+
+Program entry point at 0004:0000
+
